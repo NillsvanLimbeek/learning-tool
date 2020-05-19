@@ -1,20 +1,26 @@
 import React from 'react';
+import { createGlobalStyle } from 'styled-components';
 
 import { AuthProvider } from './context/auth/AuthContext';
 
-import { SignUp } from './components/SignUp';
-import { SignIn } from './components/SignIn';
-import { User } from './components/User';
+import { Navigation } from './components/navigation/Navigation';
+
+import { AppWrapper } from './AppStyling';
+import { Generic, Reset } from './styling';
+
+const GlobalStyle = createGlobalStyle`
+    ${Reset};
+    ${Generic};
+`;
 
 function App() {
     return (
-        <div className="App">
+        <AppWrapper>
+            <GlobalStyle />
             <AuthProvider>
-                <SignUp />
-                <SignIn />
-                <User />
+                <Navigation />
             </AuthProvider>
-        </div>
+        </AppWrapper>
     );
 }
 

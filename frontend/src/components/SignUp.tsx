@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useAuth } from '../context/auth/AuthContext';
 
 export const SignUp = () => {
@@ -14,10 +15,25 @@ export const SignUp = () => {
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        createUserWithEmailAndPassword(
-            signUp.email,
-            signUp.password,
-        ).then((res: any) => console.log(res));
+        createUserWithEmailAndPassword(signUp.email, signUp.password).then(
+            (res: any) => {
+                const user: firebase.User = res.user;
+                // console.log(user);
+
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:5000/users',
+                    data: {
+                        username: user.email,
+                        email: user.email,
+                        _id: user.uid,
+                    },
+                })
+                    .then((res) => console.log(res))
+                    .catch((err) => console.log(err));
+            },
+        );
+
         setSignUp({ email: '', password: '' });
     };
 
