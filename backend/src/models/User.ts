@@ -1,9 +1,9 @@
-import { Schema, Document, model } from 'mongoose';
+import { Schema, Document, model, Types } from 'mongoose';
 
-interface User {
+export interface User extends Document {
     username: string;
     email: string;
-    id: string;
+    _id: Schema.Types.ObjectId;
 }
 
 const UserSchema = new Schema<User>({
@@ -18,4 +18,10 @@ const UserSchema = new Schema<User>({
         unique: true,
         trim: true,
     },
+    _id: {
+        type: String,
+        required: [true, 'Please add an ID'],
+    },
 });
+
+export default model<User>('User', UserSchema);
