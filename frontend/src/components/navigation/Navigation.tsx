@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { AnimatePresence, motion } from 'framer-motion';
+
+import { NavButton } from '../NavButton';
+import { Modal } from '../modal/Modal';
 
 const NavWrapper = styled.div`
     display: flex;
@@ -38,19 +42,35 @@ const Main = styled.main`
 `;
 
 export const Navigation = () => {
-    const [showMenu, setShowMenu] = useState(false);
+    const [showMenu, setShowMenu] = useState(true);
+    const [showModal, setShowModal] = useState(false);
 
     return (
         <NavWrapper>
-            <SideMenu close={showMenu}></SideMenu>
+            <SideMenu close={showMenu}>
+                <NavButton
+                    icon="fas fa-tachometer-alt"
+                    title="Dashboard"
+                    showTitle={showMenu}
+                />
+            </SideMenu>
 
             <MenuWrapper>
                 <Header></Header>
                 <Main>
                     <p>{showMenu ? 'closed' : 'open'}</p>
+
                     <button onClick={() => setShowMenu(!showMenu)}>
                         open/close nav
                     </button>
+
+                    <button onClick={() => setShowModal(true)}>
+                        Show Modal!
+                    </button>
+
+                    <Modal showModal={showModal} setModal={setShowModal}>
+                        This is a Modal!
+                    </Modal>
                 </Main>
             </MenuWrapper>
         </NavWrapper>
