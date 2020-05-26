@@ -1,9 +1,9 @@
 import { Schema, Document, model } from 'mongoose';
 
 export interface User extends Document {
+    _id: Schema.Types.ObjectId;
     username: string;
     email: string;
-    _id: Schema.Types.ObjectId;
 }
 
 const UserSchema = new Schema<User>({
