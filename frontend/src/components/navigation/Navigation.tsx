@@ -23,17 +23,15 @@ const MenuWrapper = styled.div`
     width: 100%;
 `;
 
-const SideMenu = styled.nav<{ close: boolean }>`
-    flex: 0 0 20rem;
-    transition: all 0.25s ease-in-out;
-
-    ${(props) =>
-        props.close &&
-        `
-        flex: 0 0 5rem;
-        transition: all 0.25s ease-in-out;
-            `};
+const SideMenu = styled(motion.nav)`
+    margin-top: 5rem;
+    overflow: hidden;
 `;
+
+const variants = {
+    open: { width: `20rem` },
+    closed: { width: `5rem` },
+};
 
 const Main = styled.main`
     border-top: 1px solid black;
@@ -47,7 +45,11 @@ export const Navigation = () => {
 
     return (
         <NavWrapper>
-            <SideMenu close={showMenu}>
+            <SideMenu
+                animate={showMenu ? 'closed' : 'open'}
+                transition={{ ease: 'easeInOut' }}
+                variants={variants}
+            >
                 <NavButton
                     icon="fas fa-tachometer-alt"
                     title="Dashboard"
