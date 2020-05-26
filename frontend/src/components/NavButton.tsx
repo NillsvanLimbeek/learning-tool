@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { FlexAlign } from '../styling';
 
@@ -15,7 +16,7 @@ const NavButtonWrapper = styled.div`
     padding: 5px 1rem;
 `;
 
-const Title = styled.p`
+const Title = styled(motion.p)`
     margin: 0;
 `;
 
@@ -27,7 +28,17 @@ export const NavButton = ({ icon, showTitle, title }: Props) => {
     return (
         <NavButtonWrapper>
             <Icon className={icon} />
-            {!showTitle && <Title>{title}</Title>}
+            <AnimatePresence>
+                {!showTitle && (
+                    <Title
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        {title}
+                    </Title>
+                )}
+            </AnimatePresence>
         </NavButtonWrapper>
     );
 };
