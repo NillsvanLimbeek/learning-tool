@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useAuth } from '../context/auth/AuthContext';
+import { useAuth } from '../../context/auth/AuthContext';
 
 export const SignUp = () => {
     const { createUserWithEmailAndPassword } = useAuth();

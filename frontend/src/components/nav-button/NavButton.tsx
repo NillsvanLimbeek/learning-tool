@@ -1,28 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
-import { FlexAlign } from '../styling';
+import { Icon, NavButtonWrapper, Title } from './NavButtonStyling';
 
 type Props = {
     icon: string;
     title: string;
     showTitle: boolean;
 };
-
-const NavButtonWrapper = styled.div`
-    ${FlexAlign}
-
-    padding: 5px 1rem;
-`;
-
-const Title = styled(motion.p)`
-    margin: 0;
-`;
-
-const Icon = styled.i`
-    margin-right: 1rem;
-`;
 
 export const NavButton = ({ icon, showTitle, title }: Props) => {
     return (

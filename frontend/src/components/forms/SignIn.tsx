@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/auth/AuthContext';
+import { useAuth } from '../../context/auth/AuthContext';
 
 export const SignIn = () => {
     const { signInWithEmailAndPassword } = useAuth();
