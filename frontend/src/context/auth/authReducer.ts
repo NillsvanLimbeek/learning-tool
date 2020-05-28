@@ -5,8 +5,8 @@ export default function AuthReducer(state: State, action: Action) {
         case 'SET_USER': {
             return { ...state, user: action.payload };
         }
-        default: {
-            throw new Error(`Unhandled action type: ${action.type}`);
+        case 'SET_ERROR': {
+            return { ...state, error: action.payload };
         }
     }
 }

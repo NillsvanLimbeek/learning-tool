@@ -16,4 +16,6 @@ export type Props = {
 };
 
 export type Dispatch = (action: Action) => void;
-export type Action = { type: 'SET_USER'; payload: any };
+export type Action =
+    | { type: 'SET_USER'; payload: any }
+    | { type: 'SET_ERROR'; payload: any };

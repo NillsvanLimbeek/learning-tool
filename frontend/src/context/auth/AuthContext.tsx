@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useReducer } from 'react';
-import { auth } from '../../firebase';
+import { auth } from '../../lib/auth/firebase';
 
 import { State, Props } from './authTypes';
 import AuthReducer from './authReducer';
@@ -9,7 +9,7 @@ const initialState: State = {
     createUserWithEmailAndPassword: (email, password) => {
         return auth.createUserWithEmailAndPassword(email, password);
     },
-    signInWithEmailAndPassword: (email: string, password: string) => {
+    signInWithEmailAndPassword: async (email: string, password: string) => {
         return auth.signInWithEmailAndPassword(email, password);
     },
     signOut: () => {

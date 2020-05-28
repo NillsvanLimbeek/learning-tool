@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { useAuth } from '../../context/auth/AuthContext';
+
 import {
     Header,
     Main,
@@ -10,11 +12,11 @@ import {
 } from './NavigationStyling';
 
 import { NavButton } from '../nav-button/NavButton';
-import { Modal } from '../modal/Modal';
 
 export const Navigation = () => {
+    const { user, signOut } = useAuth();
+
     const [showMenu, setShowMenu] = useState(true);
-    const [showModal, setShowModal] = useState(false);
 
     return (
         <NavWrapper>
@@ -35,17 +37,12 @@ export const Navigation = () => {
                 <Main>
                     <p>{showMenu ? 'closed' : 'open'}</p>
 
-                    <button onClick={() => setShowMenu(!showMenu)}>
-                        open/close nav
-                    </button>
-
-                    <button onClick={() => setShowModal(true)}>
-                        Show Modal!
-                    </button>
-
-                    <Modal showModal={showModal} setModal={setShowModal}>
-                        This is a Modal!
-                    </Modal>
+                    {user && (
+                        <>
+                            <p>{user.email}</p>
+                            <button onClick={() => signOut()}>Sign out</button>
+                        </>
+                    )}
                 </Main>
             </MenuWrapper>
         </NavWrapper>

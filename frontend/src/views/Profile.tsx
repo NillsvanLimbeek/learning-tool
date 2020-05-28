@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from '../context/auth/AuthContext';
 
-export const User = () => {
+export const Profile = () => {
     const { user, signOut } = useAuth();
 
     return (

@@ -17,6 +17,7 @@ export const Modal = ({ showModal, setModal, children }: Props) => {
                     <Body
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
+                        transition={{ ease: 'easeInOut' }}
                         exit={{ opacity: 0, y: 30 }}
                     >
                         <button onClick={() => setModal(false)}>
