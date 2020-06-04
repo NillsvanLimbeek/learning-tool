@@ -1,60 +1,72 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router';
 import { useAuth } from '../../context/auth/AuthContext';
 
-import { Form, ErrorText } from './FormStyling';
-
-import { BaseInput } from '../base-input/BaseInput';
-import { BaseButton } from '../base-button/BaseButton';
+import { Form, Input, Button, Checkbox } from 'antd';
+import { Store } from 'antd/lib/form/interface';
 
 export const SignIn = () => {
     const { signInWithEmailAndPassword } = useAuth();
     const history = useHistory();
 
-    const [signIn, setSignIn] = useState({ email: '', password: '' });
-    const [error, setError] = useState(false);
+    const [form] = Form.useForm();
 
-    const setInput = (e: React.FormEvent<HTMLInputElement>) => {
-        setSignIn({ ...signIn, [e.currentTarget.name]: e.currentTarget.value });
-    };
+    const onSubmit = async (values: Store) => {
+        const { email, password, remember } = values;
+        const rememberVal = remember ? 'local' : 'session';
 
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        signInWithEmailAndPassword(signIn.email, signIn.password)
+        signInWithEmailAndPassword(email, password, rememberVal)
             .then((res) => {
-                setSignIn({ email: '', password: '' });
                 history.push('/');
+                form.resetFields();
             })
             .catch((err) => {
-                setError(true);
                 console.error(err);
             });
     };
 
     return (
-        <Form onSubmit={onSubmit}>
-            <BaseInput
+        <Form
+            initialValues={{ remember: true }}
+            onFinish={onSubmit}
+            form={form}
+        >
+            {/* TODO rules */}
+            <Form.Item
                 name="email"
-                placeholder="E-mail"
-                type="email"
-                value={signIn.email}
-                onChange={setInput}
-                required
-            />
+                rules={[
+                    //     {
+                    //         type: 'email',
+                    //         message: 'The input is not valid E-mail!',
+                    //     },
+                    {
+                        required: true,
+                        message: 'Please input your E-mail!',
+                    },
+                ]}
+            >
+                <Input placeholder="E-mail" />
+            </Form.Item>
 
-            <BaseInput
+            <Form.Item
                 name="password"
-                placeholder="Password"
-                type="password"
-                value={signIn.password}
-                onChange={setInput}
-                required
-            />
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input your password!',
+                    },
+                ]}
+            >
+                <Input.Password placeholder="Password" />
+            </Form.Item>
 
-            {error && <ErrorText>Oops...</ErrorText>}
+            <Form.Item name="remember" valuePropName="checked">
+                <Checkbox name="remember">Remember me</Checkbox>
+            </Form.Item>
 
-            <BaseButton>Sign In</BaseButton>
+            <Button type="primary" htmlType="submit" block>
+                Sign In
+            </Button>
         </Form>
     );
 };

@@ -1,34 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 
 import { useAuth } from '../../context/auth/AuthContext';
 
-import { Form } from './FormStyling';
-import { BaseButton } from '../base-button/BaseButton';
-import { BaseInput } from '../base-input/BaseInput';
+import { Form, Input, Button } from 'antd';
 
 export const SignUp = () => {
     const { createUserWithEmailAndPassword } = useAuth();
+    const [form] = Form.useForm();
 
-    const [signUp, setSignUp] = useState({
-        email: '',
-        password: '',
-    });
-    const [error, setError] = useState(false);
-
-    const setInput = (e: React.FormEvent<HTMLInputElement>) => {
-        setSignUp({ ...signUp, [e.currentTarget.name]: e.currentTarget.value });
-    };
-
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        const { email, password } = signUp;
-        e.preventDefault();
-
-        setSignUp({ email: '', password: '' });
+    const onSubmit = (values: any) => {
+        const { email, password } = values;
 
         createUserWithEmailAndPassword(email, password)
             .then((res) => {
                 console.log(res);
+                form.resetFields();
             })
             .catch((err) => console.log(err));
 
@@ -52,26 +39,36 @@ export const SignUp = () => {
     };
 
     return (
-        <Form onSubmit={onSubmit}>
-            <BaseInput
-                type="email"
+        <Form onFinish={onSubmit} form={form}>
+            <Form.Item
                 name="email"
-                value={signUp.email}
-                placeholder="Email"
-                onChange={setInput}
-                required
-            />
+                // TODO rules
+                rules={[
+                    {
+                        // required: true,
+                        // type: 'email',
+                        message: 'Please input your e-mail!',
+                    },
+                ]}
+            >
+                <Input placeholder="E-mail" />
+            </Form.Item>
 
-            <BaseInput
-                type="password"
+            <Form.Item
                 name="password"
-                value={signUp.password}
-                placeholder="Password"
-                onChange={setInput}
-                required
-            />
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input your e-mail!',
+                    },
+                ]}
+            >
+                <Input.Password placeholder="Password" />
+            </Form.Item>
 
-            <BaseButton>Sign up</BaseButton>
+            <Button type="primary" htmlType="submit" block>
+                Sign up
+            </Button>
         </Form>
     );
 };

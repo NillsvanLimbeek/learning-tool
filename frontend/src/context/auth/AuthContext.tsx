@@ -9,8 +9,16 @@ const initialState: State = {
     createUserWithEmailAndPassword: (email, password) => {
         return auth.createUserWithEmailAndPassword(email, password);
     },
-    signInWithEmailAndPassword: async (email: string, password: string) => {
-        return auth.signInWithEmailAndPassword(email, password);
+    signInWithEmailAndPassword: async (
+        email: string,
+        password: string,
+        value: 'local' | 'session' | 'none',
+    ) => {
+        auth.setPersistence(value)
+            .then((res) => {
+                return auth.signInWithEmailAndPassword(email, password);
+            })
+            .catch((err) => console.log(err));
     },
     signOut: () => {
         return auth.signOut();

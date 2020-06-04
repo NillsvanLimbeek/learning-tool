@@ -7,7 +7,8 @@ export type State = {
     signInWithEmailAndPassword: (
         email: string,
         password: string,
-    ) => Promise<firebase.auth.UserCredential>;
+        value: 'local' | 'session' | 'none',
+    ) => Promise<void>;
     signOut: () => Promise<void>;
 };
 
