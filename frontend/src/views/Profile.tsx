@@ -1,20 +1,42 @@
 import React from 'react';
+import styled from 'styled-components';
+import { Form, Input, Button } from 'antd';
+
 import { useAuth } from '../context/auth/AuthContext';
 
+const StyledForm = styled(Form)`
+    width: 50%;
+    margin: 0 auto;
+`;
+
+const layout = {
+    labelCol: { span: 5 },
+};
+
 export const Profile = () => {
-    const { user, signOut } = useAuth();
+    const { user } = useAuth();
 
-    return (
-        <div>
-            {user ? (
-                <div>
-                    <h4>User: {user.email}</h4>
-                </div>
-            ) : (
-                <h4>Nothing</h4>
-            )}
+    if (user) {
+        return (
+            <StyledForm {...layout}>
+                <Form.Item label="Name">
+                    <Input />
+                </Form.Item>
 
-            <button onClick={() => signOut()}>Logout</button>
-        </div>
-    );
+                <Form.Item label="E-mail" rules={[{ type: 'email' }]}>
+                    <Input />
+                </Form.Item>
+
+                <Form.Item label="Password">
+                    <Input.Password />
+                </Form.Item>
+
+                <Button type="primary" htmlType="submit" block>
+                    Submit
+                </Button>
+            </StyledForm>
+        );
+    }
+
+    return <h3>Something went wrong...</h3>;
 };
