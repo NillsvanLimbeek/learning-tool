@@ -1,36 +1,26 @@
-import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import { Layout } from 'antd';
 
-export const NavWrapper = styled.div`
-    display: flex;
+const { Header, Sider, Content } = Layout;
 
-    height: 100%;
+export const StyledHeader = styled(Header)`
+    background-color: white;
 `;
 
-export const Header = styled.div`
-    height: 5rem;
+export const StyledSider = styled(Sider)`
+    /* background-color: white; */
 `;
 
-export const MenuWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
+export const StyledContent = styled(Content)`
+    min-height: 28rem;
+    margin: 2.4rem 1.6rem;
+    padding: 2.4rem;
 
-    height: 100%;
-    width: 100%;
+    background-color: white;
 `;
 
-export const SideMenu = styled(motion.nav)`
-    margin-top: 5rem;
-    overflow: hidden;
-`;
-
-export const variants = {
-    open: { width: `20rem` },
-    closed: { width: `5rem` },
-};
-
-export const Main = styled.main`
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    height: 100%;
+export const Logo = styled.div`
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 16px;
 `;

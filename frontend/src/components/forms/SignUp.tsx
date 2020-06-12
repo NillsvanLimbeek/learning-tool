@@ -1,77 +1,74 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { gql } from 'apollo-boost';
+import { useMutation } from '@apollo/react-hooks';
+
+import {
+    AddUserVariables,
+    AddUser as AddUserData,
+} from './__generated__/AddUser';
 
 import { useAuth } from '../../context/auth/AuthContext';
 
-import { Form } from './FormStyling';
-import { BaseButton } from '../base-button/BaseButton';
-import { BaseInput } from '../base-input/BaseInput';
+import { Form, Input, Button } from 'antd';
+
+const ADD_USER = gql`
+    mutation AddUser($user: UserInput) {
+        addUser(user: $user) {
+            _id
+            username
+            email
+        }
+    }
+`;
 
 export const SignUp = () => {
     const { createUserWithEmailAndPassword } = useAuth();
+    const [addUser] = useMutation<AddUserData, AddUserVariables>(ADD_USER);
+    const [form] = Form.useForm();
 
-    const [signUp, setSignUp] = useState({
-        email: '',
-        password: '',
-    });
-    const [error, setError] = useState(false);
+    const onSubmit = async (values: any) => {
+        const { email, password } = values;
+        const { user } = await createUserWithEmailAndPassword(email, password);
 
-    const setInput = (e: React.FormEvent<HTMLInputElement>) => {
-        setSignUp({ ...signUp, [e.currentTarget.name]: e.currentTarget.value });
-    };
+        const newUser = {
+            username: user?.displayName,
+            email: user?.email,
+        };
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        const { email, password } = signUp;
-        e.preventDefault();
-
-        setSignUp({ email: '', password: '' });
-
-        createUserWithEmailAndPassword(email, password)
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => console.log(err));
-
-        // createUserWithEmailAndPassword(signUp.email, signUp.password).then(
-        //     (res: any) => {
-        // // create user in db
-        // const user: firebase.User = res.user;
-        // axios({
-        //     method: 'post',
-        //     url: 'http://localhost:5000/users',
-        //     data: {
-        //         username: user.email,
-        //         email: user.email,
-        //         _id: user.uid,
-        //     },
-        // })
-        // .then((res) => console.log(res))
-        // .catch((err) => console.log(err));
-        //     },
-        // );
+        await addUser({ variables: { user: newUser } });
     };
 
     return (
-        <Form onSubmit={onSubmit}>
-            <BaseInput
-                type="email"
+        <Form onFinish={onSubmit} form={form}>
+            <Form.Item
                 name="email"
-                value={signUp.email}
-                placeholder="Email"
-                onChange={setInput}
-                required
-            />
+                // TODO rules
+                rules={[
+                    {
+                        // required: true,
+                        // type: 'email',
+                        message: 'Please input your e-mail!',
+                    },
+                ]}
+            >
+                <Input placeholder="E-mail" />
+            </Form.Item>
 
-            <BaseInput
-                type="password"
+            <Form.Item
                 name="password"
-                value={signUp.password}
-                placeholder="Password"
-                onChange={setInput}
-                required
-            />
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input your e-mail!',
+                    },
+                ]}
+            >
+                <Input.Password placeholder="Password" />
+            </Form.Item>
 
-            <BaseButton>Sign up</BaseButton>
+            <Button type="primary" htmlType="submit" block>
+                Sign up
+            </Button>
         </Form>
     );
 };
