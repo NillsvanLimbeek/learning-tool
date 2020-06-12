@@ -54,7 +54,7 @@ export const resolvers: IResolvers = {
         },
     },
 
-    User: {
-        id: (user: User) => user._id.toString(),
-    },
+    // User: {
+    //     id: (user: User) => user._id.toString(),
+    // },
 };

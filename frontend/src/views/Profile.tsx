@@ -14,7 +14,7 @@ const layout = {
 };
 
 export const Profile = () => {
-    const { user } = useAuth();
+    const { user, signOut } = useAuth();
 
     if (user) {
         return (
@@ -33,6 +33,9 @@ export const Profile = () => {
 
                 <Button type="primary" htmlType="submit" block>
                     Submit
+                </Button>
+                <Button type="default" onClick={() => signOut()} block>
+                    Signout
                 </Button>
             </StyledForm>
         );

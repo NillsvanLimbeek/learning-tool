@@ -1,41 +1,41 @@
 import React from 'react';
-import axios from 'axios';
+import { gql } from 'apollo-boost';
+import { useMutation } from '@apollo/react-hooks';
+
+import {
+    AddUserVariables,
+    AddUser as AddUserData,
+} from './__generated__/AddUser';
 
 import { useAuth } from '../../context/auth/AuthContext';
 
 import { Form, Input, Button } from 'antd';
 
+const ADD_USER = gql`
+    mutation AddUser($user: UserInput) {
+        addUser(user: $user) {
+            _id
+            username
+            email
+        }
+    }
+`;
+
 export const SignUp = () => {
     const { createUserWithEmailAndPassword } = useAuth();
+    const [addUser] = useMutation<AddUserData, AddUserVariables>(ADD_USER);
     const [form] = Form.useForm();
 
-    const onSubmit = (values: any) => {
+    const onSubmit = async (values: any) => {
         const { email, password } = values;
+        const { user } = await createUserWithEmailAndPassword(email, password);
 
-        createUserWithEmailAndPassword(email, password)
-            .then((res) => {
-                console.log(res);
-                form.resetFields();
-            })
-            .catch((err) => console.log(err));
+        const newUser = {
+            username: user?.displayName,
+            email: user?.email,
+        };
 
-        // createUserWithEmailAndPassword(signUp.email, signUp.password).then(
-        //     (res: any) => {
-        // // create user in db
-        // const user: firebase.User = res.user;
-        // axios({
-        //     method: 'post',
-        //     url: 'http://localhost:5000/users',
-        //     data: {
-        //         username: user.email,
-        //         email: user.email,
-        //         _id: user.uid,
-        //     },
-        // })
-        // .then((res) => console.log(res))
-        // .catch((err) => console.log(err));
-        //     },
-        // );
+        await addUser({ variables: { user: newUser } });
     };
 
     return (

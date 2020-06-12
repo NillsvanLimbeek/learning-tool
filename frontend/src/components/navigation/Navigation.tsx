@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Layout, Menu } from 'antd';
@@ -10,6 +10,11 @@ import {
     VideoCameraOutlined,
 } from '@ant-design/icons';
 
+import { PrivateRoute } from '../../PrivateRoute';
+import { Dashboard } from '../../views/Dashboard';
+import { Videos } from '../../views/Videos';
+import { Profile } from '../../views/Profile';
+
 import {
     StyledHeader,
     StyledSider,
@@ -17,11 +22,7 @@ import {
     StyledContent,
 } from './NavigationStyling';
 
-type Props = {
-    children: ReactNode;
-};
-
-export const Navigation = ({ children }: Props) => {
+export const Navigation = () => {
     const [collapsed, setCollapsed] = useState(false);
 
     const toggle = () => setCollapsed(!collapsed);
@@ -63,7 +64,12 @@ export const Navigation = ({ children }: Props) => {
                         />
                     )}
                 </StyledHeader>
-                <StyledContent>{children}</StyledContent>
+
+                <StyledContent>
+                    <PrivateRoute path="/dashboard" component={Dashboard} />
+                    <PrivateRoute path="/videos" component={Videos} />
+                    <PrivateRoute path="/profile" component={Profile} />
+                </StyledContent>
             </Layout>
         </Layout>
     );
