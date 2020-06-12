@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Form, Input, Button } from 'antd';
 
-import { useAuth } from '../context/auth/AuthContext';
+import { useAuth } from '../../lib';
 
 const StyledForm = styled(Form)`
     width: 50%;

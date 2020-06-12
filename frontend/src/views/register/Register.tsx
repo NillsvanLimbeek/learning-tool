@@ -3,8 +3,8 @@ import React from 'react';
 import { RegisterWrapper } from './RegisterStyling';
 
 import { Card, Tabs } from 'antd';
-import { SignUp } from '../../components/forms/SignUp';
-import { SignIn } from '../../components/forms/SignIn';
+import { SignUp } from '../../components';
+import { SignIn } from '../../components';
 
 const { TabPane } = Tabs;
 

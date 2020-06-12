@@ -1,27 +1,28 @@
 import React, { createContext, useEffect, useReducer } from 'react';
-import { auth } from '../../lib/auth/firebase';
+import { Firebase } from '../../';
 
 import { State, Props } from './authTypes';
 import AuthReducer from './authReducer';
 
 const initialState: State = {
     user: null,
+    firebaseUser: null,
     createUserWithEmailAndPassword: (email, password) => {
-        return auth.createUserWithEmailAndPassword(email, password);
+        return Firebase.createUserWithEmailAndPassword(email, password);
     },
     signInWithEmailAndPassword: async (
         email: string,
         password: string,
         value: 'local' | 'session' | 'none',
     ) => {
-        auth.setPersistence(value)
+        Firebase.setPersistence(value)
             .then((res) => {
-                return auth.signInWithEmailAndPassword(email, password);
+                return Firebase.signInWithEmailAndPassword(email, password);
             })
             .catch((err) => console.log(err));
     },
     signOut: () => {
-        return auth.signOut();
+        return Firebase.signOut();
     },
 };
 
@@ -31,7 +32,7 @@ function AuthProvider({ children }: Props) {
     const [state, dispatch] = useReducer(AuthReducer, initialState);
 
     useEffect(() => {
-        auth.onAuthStateChanged((user) => {
+        Firebase.onAuthStateChanged((user) => {
             dispatch({ type: 'SET_USER', payload: user });
         });
     }, []);
@@ -40,6 +41,7 @@ function AuthProvider({ children }: Props) {
         <AuthContext.Provider
             value={{
                 user: state.user,
+                firebaseUser: state.firebaseUser,
                 createUserWithEmailAndPassword:
                     state.createUserWithEmailAndPassword,
                 signInWithEmailAndPassword: state.signInWithEmailAndPassword,

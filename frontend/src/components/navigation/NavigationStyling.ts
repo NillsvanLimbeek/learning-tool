@@ -12,9 +12,9 @@ export const StyledSider = styled(Sider)`
 `;
 
 export const StyledContent = styled(Content)`
-    min-height: 28rem;
-    margin: 2.4rem 1.6rem;
-    padding: 2.4rem;
+    min-height: 28px;
+    margin: 24px 16px;
+    padding: 24px;
 
     background-color: white;
 `;

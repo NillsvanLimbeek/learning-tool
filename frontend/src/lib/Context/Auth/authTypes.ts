@@ -1,5 +1,8 @@
+import { User } from '../../';
+
 export type State = {
-    user: firebase.User | null;
+    firebaseUser: firebase.User | null;
+    user: User | null;
     createUserWithEmailAndPassword: (
         email: string,
         password: string,
@@ -18,5 +21,6 @@ export type Props = {
 
 export type Dispatch = (action: Action) => void;
 export type Action =
+    | { type: 'SET_FIREBASE_USER'; payload: any }
     | { type: 'SET_USER'; payload: any }
     | { type: 'SET_ERROR'; payload: any };

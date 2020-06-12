@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { useAuth } from '../../context/auth/AuthContext';
+import { useAuth } from '../../lib';
 
 import { Form, Input, Button, Checkbox } from 'antd';
 import { Store } from 'antd/lib/form/interface';

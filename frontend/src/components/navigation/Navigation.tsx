@@ -10,17 +10,15 @@ import {
     VideoCameraOutlined,
 } from '@ant-design/icons';
 
-import { PrivateRoute } from '../../PrivateRoute';
-import { Dashboard } from '../../views/Dashboard';
-import { Videos } from '../../views/Videos';
-import { Profile } from '../../views/Profile';
+import { PrivateRoute } from '../';
+import { Dashboard, Profile, Videos } from '../../views';
 
 import {
     StyledHeader,
-    StyledSider,
     Logo,
+    StyledSider,
     StyledContent,
-} from './NavigationStyling';
+} from '../Navigation/NavigationStyling';
 
 export const Navigation = () => {
     const [collapsed, setCollapsed] = useState(false);

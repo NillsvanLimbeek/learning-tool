@@ -1,7 +1,7 @@
 import React, { ComponentType } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-import { useAuth } from './context/auth/AuthContext';
+import { useAuth } from '../../lib';
 
 type Props = {
     path: string;

@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { createGlobalStyle } from 'styled-components';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import 'antd/dist/antd.css';
 
-import { useAuth } from './context/auth/AuthContext';
+import { useAuth } from './lib';
 
 import { AppWrapper } from './AppStyling';
-import { Generic, Reset } from './styling';
 
-import { Navigation } from './components/navigation/Navigation';
+import { Navigation } from './components';
 
-import { Register } from './views/register/Register';
-
-const GlobalStyle = createGlobalStyle`
-    ${Reset};
-    ${Generic};
-`;
+import { Register } from './views';
 
 function App() {
     const { user } = useAuth();
@@ -30,9 +23,7 @@ function App() {
             history.push('/dashboard');
         }
 
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
+        setLoading(false);
     }, [user, history]);
 
     if (loading) {
@@ -41,8 +32,6 @@ function App() {
 
     return (
         <AppWrapper>
-            <GlobalStyle />
-
             <Switch>
                 <Route path="/signin" component={Register} />
 

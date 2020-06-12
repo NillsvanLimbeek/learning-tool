@@ -7,7 +7,7 @@ import {
     AddUser as AddUserData,
 } from './__generated__/AddUser';
 
-import { useAuth } from '../../context/auth/AuthContext';
+import { useAuth } from '../../lib';
 
 import { Form, Input, Button } from 'antd';
 
