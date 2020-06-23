@@ -6,6 +6,7 @@ import {
     AddUserVariables,
     AddUser as AddUserData,
 } from './__generated__/AddUser';
+import { User } from '../../lib/Types/User';
 
 import { useAuth } from '../../lib';
 
@@ -15,7 +16,6 @@ const ADD_USER = gql`
     mutation AddUser($user: UserInput) {
         addUser(user: $user) {
             _id
-            username
             email
         }
     }
@@ -27,15 +27,18 @@ export const SignUp = () => {
     const [form] = Form.useForm();
 
     const onSubmit = async (values: any) => {
+        // TODO error handling
         const { email, password } = values;
         const { user } = await createUserWithEmailAndPassword(email, password);
 
-        const newUser = {
-            username: user?.displayName,
-            email: user?.email,
-        };
+        if (user && user.email) {
+            const newUser: User = {
+                _id: user.uid,
+                email: user.email,
+            };
 
-        await addUser({ variables: { user: newUser } });
+            await addUser({ variables: { user: newUser } });
+        }
     };
 
     return (

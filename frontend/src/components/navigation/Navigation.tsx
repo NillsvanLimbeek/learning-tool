@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { useAuth } from '../../lib/Context/Auth/AuthContext';
+
 import { Layout, Menu } from 'antd';
 import {
     MenuUnfoldOutlined,
@@ -21,6 +23,7 @@ import {
 } from '../Navigation/NavigationStyling';
 
 export const Navigation = () => {
+    const { user } = useAuth();
     const [collapsed, setCollapsed] = useState(false);
 
     const toggle = () => setCollapsed(!collapsed);
@@ -37,13 +40,13 @@ export const Navigation = () => {
 
                 <Menu mode="inline" defaultSelectedKeys={['1']} theme="dark">
                     <Menu.Item key="1" icon={<DashboardOutlined />}>
-                        <Link to="/dashboard">Dashboard</Link>
+                        <Link to={`/${user?._id}/dashboard`}>Dashboard</Link>
                     </Menu.Item>
                     <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-                        <Link to="/videos">Videos</Link>
+                        <Link to={`/${user?._id}/videos`}>Videos</Link>
                     </Menu.Item>
                     <Menu.Item key="3" icon={<UserOutlined />}>
-                        <Link to="/profile">Profile</Link>
+                        <Link to={`/${user?._id}/profile`}>Profile</Link>
                     </Menu.Item>
                 </Menu>
             </StyledSider>
@@ -64,9 +67,9 @@ export const Navigation = () => {
                 </StyledHeader>
 
                 <StyledContent>
-                    <PrivateRoute path="/dashboard" component={Dashboard} />
-                    <PrivateRoute path="/videos" component={Videos} />
-                    <PrivateRoute path="/profile" component={Profile} />
+                    <PrivateRoute path="/:id/dashboard" component={Dashboard} />
+                    <PrivateRoute path="/:id/videos" component={Videos} />
+                    <PrivateRoute path="/:id/profile" component={Profile} />
                 </StyledContent>
             </Layout>
         </Layout>

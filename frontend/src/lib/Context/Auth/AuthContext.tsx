@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import { Firebase } from '../../';
 
-import { State, Props } from './authTypes';
+import { State, Dispatch, Props } from './authTypes';
 import AuthReducer from './authReducer';
 
 const initialState: State = {
@@ -27,13 +27,14 @@ const initialState: State = {
 };
 
 const AuthContext = createContext<State | undefined>(undefined);
+const AuthDispatch = createContext<Dispatch | undefined>(undefined);
 
 function AuthProvider({ children }: Props) {
     const [state, dispatch] = useReducer(AuthReducer, initialState);
 
     useEffect(() => {
         Firebase.onAuthStateChanged((user) => {
-            dispatch({ type: 'SET_USER', payload: user });
+            dispatch({ type: 'SET_FIREBASE_USER', payload: user });
         });
     }, []);
 
@@ -48,7 +49,9 @@ function AuthProvider({ children }: Props) {
                 signOut: state.signOut,
             }}
         >
-            {children}
+            <AuthDispatch.Provider value={dispatch}>
+                {children}
+            </AuthDispatch.Provider>
         </AuthContext.Provider>
     );
 }
@@ -63,4 +66,14 @@ function useAuth() {
     return context;
 }
 
-export { AuthProvider, useAuth };
+function useAuthDispatch() {
+    const context = React.useContext(AuthDispatch);
+
+    if (context === undefined) {
+        throw new Error('useAuth must be used within a AuthProvider');
+    }
+
+    return context;
+}
+
+export { AuthProvider, useAuth, useAuthDispatch };

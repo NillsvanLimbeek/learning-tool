@@ -1,30 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
+import { gql } from 'apollo-boost';
+import { useLazyQuery } from '@apollo/react-hooks';
 import 'antd/dist/antd.css';
 
-import { useAuth } from './lib';
+import { useAuth, useAuthDispatch } from './lib';
+
+import { GetUser, GetUserVariables } from './__generated__/GetUser';
 
 import { AppWrapper } from './AppStyling';
 
+import { Register } from './views';
 import { Navigation } from './components';
 
-import { Register } from './views';
+const GET_USER = gql`
+    query GetUser($id: String) {
+        getUser(id: $id) {
+            _id
+            email
+        }
+    }
+`;
 
 function App() {
-    const { user } = useAuth();
+    const { firebaseUser } = useAuth();
+    const dispatch = useAuthDispatch();
+    const [getUser, { loading, error, data }] = useLazyQuery<
+        GetUser,
+        GetUserVariables
+    >(GET_USER);
     const history = useHistory();
 
-    const [loading, setLoading] = useState(false);
-
     useEffect(() => {
-        setLoading(true);
+        if (firebaseUser) {
+            getUser({ variables: { id: firebaseUser.uid } });
 
-        if (user) {
-            history.push('/dashboard');
+            if (data && data.getUser) {
+                dispatch({ type: 'SET_USER', payload: data.getUser });
+                history.push(`${data.getUser._id}/dashboard`);
+            }
         }
-
-        setLoading(false);
-    }, [user, history]);
+    }, [firebaseUser, history, dispatch, getUser, data]);
 
     if (loading) {
         return <p>Loading...</p>;

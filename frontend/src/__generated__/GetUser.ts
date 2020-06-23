@@ -3,22 +3,20 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { UserInput } from "./../../../../__generated__/globalTypes";
-
 // ====================================================
-// GraphQL mutation operation: AddUser
+// GraphQL query operation: GetUser
 // ====================================================
 
-export interface AddUser_addUser {
+export interface GetUser_getUser {
   __typename: "User";
   _id: string | null;
   email: string | null;
 }
 
-export interface AddUser {
-  addUser: AddUser_addUser | null;
+export interface GetUser {
+  getUser: GetUser_getUser | null;
 }
 
-export interface AddUserVariables {
-  user?: UserInput | null;
+export interface GetUserVariables {
+  id?: string | null;
 }

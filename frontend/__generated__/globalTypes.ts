@@ -8,7 +8,7 @@
 //==============================================================
 
 export interface UserInput {
-  username?: string | null;
+  _id?: string | null;
   email?: string | null;
 }
 
