@@ -1,21 +1,24 @@
 import { IResolvers } from 'apollo-server-express';
-import { ObjectId } from 'mongodb';
 
 import { Database } from '../data/types/database';
 import { User } from '../data';
 
 export const resolvers: IResolvers = {
     Query: {
-        users: async (root: undefined, args: {}, { db }: { db: Database }) => {
+        users: async (
+            _root: undefined,
+            _args: {},
+            { db }: { db: Database },
+        ) => {
             return await db.users.find({}).toArray();
         },
 
         getUser: async (
-            root: undefined,
+            _root: undefined,
             { id }: { id: string },
             { db }: { db: Database },
         ) => {
-            const user = await db.users.findOne({ _id: new ObjectId(id) });
+            const user = await db.users.findOne({ _id: id });
 
             if (!user) throw new Error('No user was found');
 
@@ -25,27 +28,27 @@ export const resolvers: IResolvers = {
 
     Mutation: {
         addUser: async (
-            root: undefined,
+            _root: undefined,
             { user }: { user: User },
             { db }: { db: Database },
         ) => {
-            const newUser = await db.users.save({
+            const newUser = await db.users.insertOne({
                 ...user,
-                _id: new ObjectId(),
+                _id: user._id,
             });
 
             if (!newUser) throw new Error('Cannot save user');
 
-            return newUser.result;
+            return newUser;
         },
 
         deleteUser: async (
-            root: undefined,
+            _root: undefined,
             { id }: { id: string },
             { db }: { db: Database },
         ) => {
             const user = await db.users.findOneAndDelete({
-                _id: new ObjectId(id),
+                _id: id,
             });
 
             if (!user) throw new Error('No user was found');
@@ -53,8 +56,4 @@ export const resolvers: IResolvers = {
             return user.value;
         },
     },
-
-    // User: {
-    //     id: (user: User) => user._id.toString(),
-    // },
 };
